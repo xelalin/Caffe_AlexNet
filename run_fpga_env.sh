@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source run_common_env.sh
+
+export CAFFE_XLNX_1SHOT_ALL_CONV=1
+export CAFFE_XLNX_USE_XDNN_FLOW=1 
+
+export OMP_NUM_THREADS=2
+export OPENBLAS_NUM_THREADS=2
+
+# RTL switches
+export XBLAS_USE_DDR_KARGS=0
+export XBLAS_USE_SCALE_KERNEL=1
+export XBLAS_USE_MAXPOOL_KERNEL=1
+export XBLAS_USE_RELU_KERNEL=1
+export XBLAS_USE_RTL_FLOW=1

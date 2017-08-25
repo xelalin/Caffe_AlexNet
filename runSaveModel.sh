@@ -1,0 +1,35 @@
+ex#!/bin/bash
+# set environment LD_LIBRARY_PATH=/opt/ristretto_fpga/xlnx/lib/x86_64:/opt/ristretto_fpga/xlnx/lib
+# set environment XILINX_OPENCL=/opt/ristretto_fpga
+# set environment XBLAS_RESULT_SHIFT16=1
+# set environment CAFFE_XLNX_NUM_IMAGE_CACHE=4
+
+export LD_LIBRARY_PATH=$PWD:/opt/intel/mkl/lib/intel64:/opt/intel/compiler/lib/intel64:$PWD/xlnx-i2c/runtime/lib/x86_64/
+export XILINX_OPENCL=$PWD/xlnx-i2c
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+#export SDACCEL_PROFILE_OFF=true
+
+#export XBLAS_SCALE_FIXED_TO_SHORT=1
+export XBLAS_USE_CBLAS=1
+export XBLAS_RESULT_SHIFT16=1
+export XBLAS_NUM_PREP_THREADS=1
+export XBLAS_NUM_POST_THREADS=1
+#export XBLAS_USE_BATCHED_CPOST=1
+#export XBLAS_NUM_KERNELS=1
+
+export CAFFE_XLNX_USE_DEFAULT_SGEMM=1
+#export CAFFE_XLNX_NUM_THREADS=4
+#export CAFFE_XLNX_SKIP_BIAS=1
+#export CAFFE_XLNX_EXCLUDE_FC_TIME=1
+export CAFFE_XLNX_NUM_IMAGE_CACHE=64
+export CAFFE_XLNX_DO_GEMM_PREP_B=1
+export CAFFE_XLNX_HACK_QUANTSCALE=1 
+#export CAFFE_XLNX_PIPELINE_GEMM=1
+#export CAFFE_XLNX_IMAGE_BATCH_SIZE=8 # enables batching if BATCH_SIZE > 1
+
+echo " "
+echo "=============== XBLAS ============================="
+
+
+./build/tools/save_net_weights.bin ./AlexNet/Alex_quantize16bit_deploy.prototxt ./AlexNet/Alexnet_q.caffemodel ./AlexNet/weightsTrimmed/

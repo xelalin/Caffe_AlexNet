@@ -1,0 +1,77 @@
+<html>
+ <head>
+  <title>FPGA Caffe</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="index.js"></script>
+  <link rel="stylesheet" type="text/css" href="index.css">
+ </head>
+ <body>
+  <div id="header">
+   <img src="media/xilinxlogoinverted.png" height="70px"/>
+   <div class="title">Machine Learning Application: Image Classification</div>
+   <!--<img src="media/xilinxsdx.jpg" height="60px"/>-->
+  </div><!--header-->
+
+  <div id="canvas">
+   <div id="model"></div>
+   <div id="device"></div>
+   <div id="left-bar">
+    <div class="title">Realtime metrics</div>
+    <div class="hidden">
+     <div class="metrics-label">Int8 images/s</div>
+     <div class="metrics-8 metrics-val">0</div>
+    </div>
+    <div>
+    <div class="metrics-label">Int16 images/s</div>
+     <div class="metrics-16 metrics-val">0</div>
+    </div>
+    <div>
+     <div class="metrics-label">TeraOPS</div>
+     <div class="metrics-tops metrics-val">0</div>
+    </div>
+    <div>
+     <div class="metrics-label">Power (W)</div>
+     <div class="metrics-power metrics-val">0</div>
+    </div>
+    <div>
+     <div class="metrics-label">Accuracy</div>
+     <div class="metrics-accuracy metrics-val">...</div>
+    </div>
+   </div>
+   <div id="stage">Waiting for data...</div>
+  </div><!--canvas-->
+
+  <script>
+   var ui = new UI({
+    selector: "#stage",
+    fps_selector_prefix: "#left-bar .metrics-",
+    tops_selector: "#left-bar .metrics-tops",
+    power_selector: "#left-bar .metrics-power",
+    accuracy_selector: "#left-bar .metrics-accuracy",
+    slides: [
+      "media/slides/xilinxTopStack.PNG",
+      "media/slides/blockDiagram.PNG",
+      "media/slides/alexKernelOverview.PNG",
+      "media/slides/8bitInference.PNG",
+      "media/slides/16bitMMimpl.PNG",
+      "media/slides/8bitMMimpl.PNG",
+      "media/slides/MACConeDSP.PNG",
+      "media/slides/softwareStack.PNG",
+      "media/slides/deviceView.PNG"
+    ]
+   });
+
+   var hostname = window.location.hostname;
+   var wsMgr = new WebSocketMgr({
+     url: "ws://" + hostname + ":8999/",
+     callback: function(data) {
+       ui.updateWithNewData(data);
+     },
+     profdata_callback: function(data) {
+       ui.updateProfileData(data);
+     }
+   });
+  </script>
+ </body>
+</html>
